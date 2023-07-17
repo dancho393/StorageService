@@ -10,6 +10,7 @@ import com.example.storageservice.api.operations.itemStorage.get.GetItemStorageR
 import com.example.storageservice.api.operations.itemStorage.get.GetItemStorageService;
 import com.example.storageservice.api.operations.itemStorage.importItem.ImportItemStorageRequest;
 import com.example.storageservice.api.operations.itemStorage.importItem.ImportItemStorageService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/itemStorage")
 public class ItemStorageController {
+
     private final ImportItemStorageService importItemStorageService;
     private final ExportItemStorageService exportItemStorageService;
     private final ChangePriceItemStorageService changePriceItemStorageService;
@@ -37,9 +39,9 @@ public class ItemStorageController {
         return ResponseEntity.ok(changePriceItemStorageService.changePrice(newPrice));
     }
     @PostMapping("/createItemStorage")
-    public ResponseEntity createItemStorate(@RequestBody CreateItemStorageRequest itemStorage){
-        return ResponseEntity.ok(createItemStorageService.createItemStorage(itemStorage));
+    public ResponseEntity createItemStorage(@Valid @RequestBody CreateItemStorageRequest itemStorage){
 
+        return ResponseEntity.ok(createItemStorageService.createItemStorage(itemStorage));
     }
     @GetMapping("/getItemStorage")
     public ResponseEntity getItemStorage(@RequestBody GetItemStorageRequest itemStorage){
