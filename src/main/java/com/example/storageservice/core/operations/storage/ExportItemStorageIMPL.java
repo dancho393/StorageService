@@ -1,12 +1,12 @@
-package com.example.storageservice.bussiness.operations.storage;
+package com.example.storageservice.core.operations.storage;
 
-import com.example.storageservice.api.exceptions.QuantityBelowZeroException;
-import com.example.storageservice.api.exceptions.ResourceNotFoundException;
+import com.example.storageservice.rest.exceptions.QuantityBelowZeroException;
+import com.example.storageservice.rest.exceptions.ResourceNotFoundException;
 import com.example.storageservice.api.operations.itemStorage.exportItem.ExportItemStorageRequest;
 import com.example.storageservice.api.operations.itemStorage.exportItem.ExportItemStorageResponse;
 import com.example.storageservice.api.operations.itemStorage.exportItem.ExportItemStorageService;
-import com.example.storageservice.data.entities.ItemStorage;
-import com.example.storageservice.data.repositories.ItemStorageRepository;
+import com.example.storageservice.persistence.entities.ItemStorage;
+import com.example.storageservice.persistence.repositories.ItemStorageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class ExportItemStorageIMPL implements ExportItemStorageService {
     private final ItemStorageRepository itemStorageRepository;
 
     @Override
-    public ExportItemStorageResponse exportItem(ExportItemStorageRequest item) {
+    public ExportItemStorageResponse operationProcess(ExportItemStorageRequest item) {
         ItemStorage itemStorageEntity=itemStorageRepository.findById(item.getId())
                         .orElseThrow(()->new ResourceNotFoundException("ItemStorage Not Found"));
         itemStorageEntity.setQuantity(itemStorageEntity.getQuantity()- item.getQuantity());

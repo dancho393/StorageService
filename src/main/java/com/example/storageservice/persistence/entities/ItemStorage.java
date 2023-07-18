@@ -1,10 +1,8 @@
-package com.example.storageservice.data.entities;
+package com.example.storageservice.persistence.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.UUID;
 

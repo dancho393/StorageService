@@ -1,4 +1,4 @@
-package com.example.storageservice.api.exceptions;
+package com.example.storageservice.rest.exceptions;
 
 public class QuantityBelowZeroException extends RuntimeException{
     public QuantityBelowZeroException(String message){

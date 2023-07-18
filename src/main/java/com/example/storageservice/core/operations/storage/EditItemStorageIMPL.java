@@ -1,11 +1,11 @@
-package com.example.storageservice.bussiness.operations.storage;
+package com.example.storageservice.core.operations.storage;
 
-import com.example.storageservice.api.exceptions.ResourceNotFoundException;
+import com.example.storageservice.rest.exceptions.ResourceNotFoundException;
 import com.example.storageservice.api.operations.itemStorage.edit.EditItemStorageRequest;
 import com.example.storageservice.api.operations.itemStorage.edit.EditItemStorageResponse;
 import com.example.storageservice.api.operations.itemStorage.edit.EditItemStorageService;
-import com.example.storageservice.data.entities.ItemStorage;
-import com.example.storageservice.data.repositories.ItemStorageRepository;
+import com.example.storageservice.persistence.entities.ItemStorage;
+import com.example.storageservice.persistence.repositories.ItemStorageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class EditItemStorageIMPL implements EditItemStorageService {
     private final ItemStorageRepository itemStorageRepository;
     @Override
-    public EditItemStorageResponse editItemStorage(EditItemStorageRequest itemStorage) {
+    public EditItemStorageResponse operationProcess(EditItemStorageRequest itemStorage) {
         ItemStorage itemStorageEntity = itemStorageRepository.findById(itemStorage.getId())
                 .orElseThrow(()->new ResourceNotFoundException("ItemStorage Not Found"));
         itemStorageEntity.setQuantity(itemStorage.getQuantity());
@@ -28,4 +28,6 @@ public class EditItemStorageIMPL implements EditItemStorageService {
                 .price(itemStorage.getPrice())
                 .build();
     }
+
+
 }

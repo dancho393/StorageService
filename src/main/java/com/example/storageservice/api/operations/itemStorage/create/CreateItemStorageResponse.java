@@ -1,5 +1,6 @@
 package com.example.storageservice.api.operations.itemStorage.create;
 
+import com.example.storageservice.api.operations.base.OperationResponse;
 import lombok.*;
 
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateItemStorageResponse {
+public class CreateItemStorageResponse implements OperationResponse {
     private UUID id;
     private UUID itemId;
     private int quantity;

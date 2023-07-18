@@ -1,11 +1,11 @@
-package com.example.storageservice.bussiness.operations.storage;
+package com.example.storageservice.core.operations.storage;
 
-import com.example.storageservice.api.exceptions.ResourceNotFoundException;
+import com.example.storageservice.rest.exceptions.ResourceNotFoundException;
 import com.example.storageservice.api.operations.itemStorage.get.GetItemStorageRequest;
 import com.example.storageservice.api.operations.itemStorage.get.GetItemStorageResponse;
 import com.example.storageservice.api.operations.itemStorage.get.GetItemStorageService;
-import com.example.storageservice.data.entities.ItemStorage;
-import com.example.storageservice.data.repositories.ItemStorageRepository;
+import com.example.storageservice.persistence.entities.ItemStorage;
+import com.example.storageservice.persistence.repositories.ItemStorageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class GetItemStorageIMPL implements GetItemStorageService {
     private final ItemStorageRepository itemStorageRepository;
 
     @Override
-    public GetItemStorageResponse getItem(GetItemStorageRequest storageItem) {
+    public GetItemStorageResponse operationProcess(GetItemStorageRequest storageItem) {
         ItemStorage itemStorageEntity = itemStorageRepository.findById(storageItem.getId())
                 .orElseThrow(()->new ResourceNotFoundException("ItemStorage Not Found"));
 

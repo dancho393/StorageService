@@ -1,9 +1,10 @@
-package com.example.storageservice.controllers;
+package com.example.storageservice.rest.controllers;
 
 import com.example.storageservice.api.operations.itemStorage.changePrice.ChangePriceItemStorageRequest;
 import com.example.storageservice.api.operations.itemStorage.changePrice.ChangePriceItemStorageService;
 import com.example.storageservice.api.operations.itemStorage.create.CreateItemStorageRequest;
 import com.example.storageservice.api.operations.itemStorage.create.CreateItemStorageService;
+import com.example.storageservice.api.operations.itemStorage.edit.EditItemStorageService;
 import com.example.storageservice.api.operations.itemStorage.exportItem.ExportItemStorageRequest;
 import com.example.storageservice.api.operations.itemStorage.exportItem.ExportItemStorageService;
 import com.example.storageservice.api.operations.itemStorage.get.GetItemStorageRequest;
@@ -25,27 +26,28 @@ public class ItemStorageController {
     private final ChangePriceItemStorageService changePriceItemStorageService;
     private final CreateItemStorageService createItemStorageService;
     private final GetItemStorageService getItemStorageService;
+    private final EditItemStorageService editItemStorageService;//NotUsedYet
 
     @PutMapping("/import")
     public ResponseEntity importItemStorage(@RequestBody ImportItemStorageRequest item){
-        return ResponseEntity.ok(importItemStorageService.importItem(item));
+        return ResponseEntity.ok(importItemStorageService.operationProcess(item));
     }
     @PutMapping("/export")
     public ResponseEntity exportItemStorage(@RequestBody ExportItemStorageRequest item){
-        return ResponseEntity.ok(exportItemStorageService.exportItem(item));
+        return ResponseEntity.ok(exportItemStorageService.operationProcess(item));
     }
     @PutMapping("/changePrice")
     public ResponseEntity changePrice(@RequestBody ChangePriceItemStorageRequest newPrice){
-        return ResponseEntity.ok(changePriceItemStorageService.changePrice(newPrice));
+        return ResponseEntity.ok(changePriceItemStorageService.operationProcess(newPrice));
     }
     @PostMapping("/createItemStorage")
     public ResponseEntity createItemStorage(@Valid @RequestBody CreateItemStorageRequest itemStorage){
 
-        return ResponseEntity.ok(createItemStorageService.createItemStorage(itemStorage));
+        return ResponseEntity.ok(createItemStorageService.operationProcess(itemStorage));
     }
     @GetMapping("/getItemStorage")
     public ResponseEntity getItemStorage(@RequestBody GetItemStorageRequest itemStorage){
-        return ResponseEntity.ok(getItemStorageService.getItem(itemStorage));
+        return ResponseEntity.ok(getItemStorageService.operationProcess(itemStorage));
     }
 
 }

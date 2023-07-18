@@ -1,4 +1,4 @@
-package com.example.storageservice.api.exceptions;
+package com.example.storageservice.rest.exceptions;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
