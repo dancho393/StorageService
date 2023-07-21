@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChangePriceItemStorageIMPL implements ChangePriceItemStorageService {
     private final ItemStorageRepository itemStorageRepository;
+    //Change Test
     @Override
     public ChangePriceItemStorageResponse operationProcess(ChangePriceItemStorageRequest newPrice) {
         ItemStorage itemStorageEntity = itemStorageRepository.findById(newPrice.getId())
