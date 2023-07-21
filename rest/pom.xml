@@ -9,9 +9,9 @@
         <version>${revision}</version>
     </parent>
 
-
+    <groupId>com.example.storageservice</groupId>
     <artifactId>rest</artifactId>
-
+    <version>${revision}</version>
     <dependencies>
         <dependency>
             <groupId>com.example</groupId>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.example</groupId>
@@ -36,7 +36,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
-
 
     </dependencies>
 

@@ -9,9 +9,9 @@
         <artifactId>StorageService</artifactId>
         <version>${revision}</version>
     </parent>
-
-
+    <groupId>com.example.storageservice</groupId>
     <artifactId>api</artifactId>
+    <version>${revision}</version>
     <dependencies>
         <dependency>
             <groupId>jakarta.validation</groupId>
