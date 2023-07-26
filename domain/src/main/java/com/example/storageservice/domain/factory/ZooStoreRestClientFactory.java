@@ -1,5 +1,6 @@
 package com.example.storageservice.domain.factory;
-import com.example.zoostore.restexport.restoperation.ZooStoreRestClient;
+
+import com.example.zoostore.restexport.ZooStoreRestClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;

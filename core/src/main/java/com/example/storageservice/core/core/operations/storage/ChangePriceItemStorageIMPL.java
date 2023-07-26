@@ -1,22 +1,18 @@
 package com.example.storageservice.core.core.operations.storage;
 
 
-
-
-
+import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageRequest;
 import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageResponse;
-import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageService;
 import com.example.storageservice.core.core.exceptions.ResourceNotFoundException;
 import com.example.storageservice.persistence.persistence.entities.ItemStorage;
 import com.example.storageservice.persistence.persistence.repositories.ItemStorageRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChangePriceItemStorageIMPL implements ChangePriceItemStorageService {
+public class ChangePriceItemStorageIMPL implements ChangePriceItemStorageOperation {
     private final ItemStorageRepository itemStorageRepository;
     //Change Test
     @Override

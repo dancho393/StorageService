@@ -1,18 +1,17 @@
 package com.example.storageservice.core.core.operations.storage;
 
+import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageRequest;
 import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageResponse;
-import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageService;
 import com.example.storageservice.core.core.exceptions.ResourceNotFoundException;
 import com.example.storageservice.persistence.persistence.entities.ItemStorage;
 import com.example.storageservice.persistence.persistence.repositories.ItemStorageRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GetItemStorageIMPL implements GetItemStorageService {
+public class GetItemStorageIMPL implements GetItemStorageOperation {
     private final ItemStorageRepository itemStorageRepository;
 
     @Override
