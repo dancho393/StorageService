@@ -3,17 +3,19 @@ package com.example.storageservice.rest.controllers;
 
 import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageRequest;
+import com.example.storageservice.api.api.operations.itemStorage.changeQuantity.ChangeQuantityOperation;
+import com.example.storageservice.api.api.operations.itemStorage.changeQuantity.ChangeQuantityRequest;
 import com.example.storageservice.api.api.operations.itemStorage.create.CreateItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.create.CreateItemStorageRequest;
 import com.example.storageservice.api.api.operations.itemStorage.edit.EditItemStorageOperation;
-import com.example.storageservice.api.api.operations.itemStorage.exportItem.ExportItemStorageOperation;
-import com.example.storageservice.api.api.operations.itemStorage.exportItem.ExportItemStorageRequest;
 import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageRequest;
-import com.example.storageservice.api.api.operations.itemStorage.importItem.ImportItemStorageOperation;
-import com.example.storageservice.api.api.operations.itemStorage.importItem.ImportItemStorageRequest;
+import com.example.storageservice.api.api.operations.itemStorage.getByItemId.GetByItemIdOperation;
+import com.example.storageservice.api.api.operations.itemStorage.getByItemId.GetByItemIdRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,26 +27,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ItemStorageController {
 
-    private final ImportItemStorageOperation importItemStorageOperation;
-    private final ExportItemStorageOperation exportItemStorageOperation;
     private final ChangePriceItemStorageOperation changePriceItemStorageOperation;
     private final CreateItemStorageOperation createItemStorageOperation;
     private final GetItemStorageOperation getItemStorageOperation;
+    private final ChangeQuantityOperation changeQuantityOperation;
     private final EditItemStorageOperation editItemStorageOperation;//NotUsedYet
+    private final GetByItemIdOperation getByItemIdOperation;
+    @PutMapping("/quantity")
+    public ResponseEntity changeQuantity(@RequestBody ChangeQuantityRequest itemStorage){
+        return ResponseEntity.ok(changeQuantityOperation.operationProcess(itemStorage));
+    }
 
-    @PutMapping("/import")
-    public ResponseEntity importItemStorage(@Valid @RequestBody ImportItemStorageRequest item){
-        return ResponseEntity.ok(importItemStorageOperation.operationProcess(item));
-    }
-    @PutMapping("/export")
-    public ResponseEntity exportItemStorage(@Valid @RequestBody ExportItemStorageRequest item){
-        return ResponseEntity.ok(exportItemStorageOperation.operationProcess(item));
-    }
-    @PutMapping("/changePrice")
+    @PutMapping("/price")
     public ResponseEntity changePrice(@Valid @RequestBody ChangePriceItemStorageRequest newPrice){
         return ResponseEntity.ok(changePriceItemStorageOperation.operationProcess(newPrice));
     }
-    @PostMapping("/createItemStorage")
+    @PostMapping("/new")
     public ResponseEntity createItemStorage(@Valid @RequestBody CreateItemStorageRequest itemStorage){
 
         return ResponseEntity.ok(createItemStorageOperation.operationProcess(itemStorage));
@@ -55,6 +53,10 @@ public class ItemStorageController {
                 .id(id)
                 .build();
         return ResponseEntity.ok(getItemStorageOperation.operationProcess(itemStorage));
+    }
+    @GetMapping("/byItemId/{itemId}")
+    public ResponseEntity getAllItemStorages(@PathVariable UUID itemId){
+        return ResponseEntity.ok(getByItemIdOperation.operationProcess(GetByItemIdRequest.builder().itemId(itemId).build()));
     }
 
 

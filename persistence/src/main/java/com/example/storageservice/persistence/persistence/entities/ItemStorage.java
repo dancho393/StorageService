@@ -17,8 +17,6 @@ public class ItemStorage {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     private UUID id;
-
-
     private UUID itemId;
 
     @Min(value = 0,message = "Quantity must be greater or equal to zero")

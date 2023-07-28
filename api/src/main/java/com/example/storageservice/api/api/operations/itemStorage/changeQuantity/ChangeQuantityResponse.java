@@ -1,5 +1,4 @@
-package com.example.storageservice.api.api.operations.itemStorage.exportItem;
-
+package com.example.storageservice.api.api.operations.itemStorage.changeQuantity;
 
 import com.example.storageservice.api.api.operations.base.OperationResponse;
 import lombok.*;
@@ -11,9 +10,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExportItemStorageResponse implements OperationResponse {
+public class ChangeQuantityResponse implements OperationResponse {
     private UUID id;
-    private UUID itemId;
     private int quantity;
-    private Float price;
+    private float price;
 }
