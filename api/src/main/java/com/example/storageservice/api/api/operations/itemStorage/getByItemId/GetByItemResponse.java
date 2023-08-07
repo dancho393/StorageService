@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetByItemResponse implements OperationResponse {
 
-   private int quantity=0;
-   private Float price=0.0f;
+   private int quantity;
+   private Float price;
 }

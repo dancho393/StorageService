@@ -8,9 +8,6 @@ import com.example.storageservice.persistence.persistence.repositories.ItemStora
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor

@@ -3,6 +3,7 @@ package com.example.storageservice.rest.controllers;
 
 import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageRequest;
+import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageResponse;
 import com.example.storageservice.api.api.operations.itemStorage.changeQuantity.ChangeQuantityOperation;
 import com.example.storageservice.api.api.operations.itemStorage.changeQuantity.ChangeQuantityRequest;
 import com.example.storageservice.api.api.operations.itemStorage.create.CreateItemStorageOperation;
@@ -23,7 +24,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/itemStorages")
+@RequestMapping("/item-storages")
 @RequiredArgsConstructor
 public class ItemStorageController {
 
@@ -39,10 +40,10 @@ public class ItemStorageController {
     }
 
     @PutMapping("/price")
-    public ResponseEntity changePrice(@Valid @RequestBody ChangePriceItemStorageRequest newPrice){
+    public ResponseEntity<ChangePriceItemStorageResponse> changePrice(@Valid @RequestBody ChangePriceItemStorageRequest newPrice){
         return ResponseEntity.ok(changePriceItemStorageOperation.operationProcess(newPrice));
     }
-    @PostMapping("/new")
+    @PostMapping()
     public ResponseEntity createItemStorage(@Valid @RequestBody CreateItemStorageRequest itemStorage){
 
         return ResponseEntity.ok(createItemStorageOperation.operationProcess(itemStorage));
