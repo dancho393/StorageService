@@ -7,6 +7,7 @@ import com.example.storageservice.api.api.operations.purchase.create.CreatePurch
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllPurchase;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllRequest;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllResponse;
+import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserResponse;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;

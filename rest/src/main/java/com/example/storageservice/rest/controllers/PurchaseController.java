@@ -4,11 +4,16 @@ import com.example.storageservice.api.api.operations.purchase.create.CreatePurch
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseResponse;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllRequest;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllResponse;
+import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserOperation;
+import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserRequest;
+import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserResponse;
 import com.example.storageservice.core.core.operations.purchase.create.CreatePurchaseIMPL;
 import com.example.storageservice.core.core.operations.purchase.getAll.GetAllIMPL;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/purchase")
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class PurchaseController {
     private final GetAllIMPL getAll;
     private final CreatePurchaseIMPL createPurchase;
+    private final GetPurchaseForUserOperation getPurchaseForUserOperation;
     @GetMapping("/all/{page}")
     public ResponseEntity<GetAllResponse> getAll(@PathVariable int page){
         return ResponseEntity.ok(getAll.operationProcess(GetAllRequest.builder()
@@ -25,5 +31,12 @@ public class PurchaseController {
     @PostMapping("/new")
     public ResponseEntity<CreatePurchaseResponse> create(@RequestBody CreatePurchaseRequest request){
         return ResponseEntity.ok(createPurchase.operationProcess(request));
+    }
+    @PostMapping("/{userId}")
+    public ResponseEntity<GetPurchaseForUserResponse> getByUserId(@PathVariable UUID userId){
+        return ResponseEntity.ok(getPurchaseForUserOperation.operationProcess(GetPurchaseForUserRequest.builder()
+
+                .userId(userId).build()));
+
     }
 }
