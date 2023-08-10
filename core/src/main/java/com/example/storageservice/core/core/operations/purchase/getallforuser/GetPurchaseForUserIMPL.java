@@ -10,7 +10,6 @@ import com.example.zoostore.api.operations.item.getrecommendee.GetRecommendeeIte
 import com.example.zoostore.restexport.ZooStoreRestClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.storageservice.restexport.StorageServiceRestClient;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,8 +2,6 @@ package com.example.storageservice.persistence.persistence.repositories;
 
 
 import com.example.storageservice.persistence.persistence.entities.ItemStorage;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

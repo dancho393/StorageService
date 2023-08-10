@@ -40,8 +40,6 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
            });
            itemStorageRepository.saveAll(list);
         }
-
-
         purchaseRepository.save(Purchase.builder()
                 .userId(request.getUserId())
                         .purchaseDate(new Timestamp(System.currentTimeMillis()))

@@ -15,8 +15,6 @@ import com.example.storageservice.api.api.operations.itemStorage.getByItemId.Get
 import com.example.storageservice.api.api.operations.itemStorage.getByItemId.GetByItemIdRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

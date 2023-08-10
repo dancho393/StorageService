@@ -3,8 +3,6 @@ package com.example.storageservice.api.api.operations.itemStorage.getByItemId;
 import com.example.storageservice.api.api.operations.base.OperationResponse;
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Builder

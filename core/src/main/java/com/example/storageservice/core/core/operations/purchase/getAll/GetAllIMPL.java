@@ -1,7 +1,5 @@
 package com.example.storageservice.core.core.operations.purchase.getAll;
 
-import com.example.storageservice.api.api.operations.base.OperationRequest;
-import com.example.storageservice.api.api.operations.base.OperationResponse;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllOperation;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllPurchase;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllRequest;

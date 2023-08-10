@@ -3,7 +3,6 @@ package com.example.storageservice.api.api.operations.purchase.getAll;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 @AllArgsConstructor

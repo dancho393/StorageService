@@ -4,10 +4,7 @@ import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStor
 import com.example.storageservice.api.api.operations.itemStorage.getByItemId.GetByItemResponse;
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseRequest;
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseResponse;
-import com.example.storageservice.api.api.operations.purchase.getAll.GetAllPurchase;
-import com.example.storageservice.api.api.operations.purchase.getAll.GetAllRequest;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllResponse;
-import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserRequest;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserResponse;
 import feign.Headers;
 import feign.Param;
