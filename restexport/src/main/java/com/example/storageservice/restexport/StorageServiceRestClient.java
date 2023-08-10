@@ -7,6 +7,7 @@ import com.example.storageservice.api.api.operations.purchase.create.CreatePurch
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllPurchase;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllRequest;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllResponse;
+import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserRequest;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserResponse;
 import feign.Headers;
 import feign.Param;
@@ -23,5 +24,8 @@ public interface StorageServiceRestClient {
     CreatePurchaseResponse createPurchase(@RequestBody CreatePurchaseRequest request);
     @RequestLine("GET /purchase/all/{page}")
     GetAllResponse getAllPurchase(@Param  int page);
+    @RequestLine("POST /purchase/{userId}/{page}")
+    GetPurchaseForUserResponse recommend(@Param String userId,@Param int page);
+
 
 }

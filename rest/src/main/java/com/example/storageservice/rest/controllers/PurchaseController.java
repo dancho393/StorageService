@@ -32,10 +32,11 @@ public class PurchaseController {
     public ResponseEntity<CreatePurchaseResponse> create(@RequestBody CreatePurchaseRequest request){
         return ResponseEntity.ok(createPurchase.operationProcess(request));
     }
-    @PostMapping("/{userId}")
-    public ResponseEntity<GetPurchaseForUserResponse> getByUserId(@PathVariable UUID userId){
-        return ResponseEntity.ok(getPurchaseForUserOperation.operationProcess(GetPurchaseForUserRequest.builder()
-
+    @PostMapping("/{userId}/{page}")
+    public ResponseEntity<GetPurchaseForUserResponse> getByUserId(@PathVariable UUID userId,@PathVariable int page){
+        return ResponseEntity.ok(getPurchaseForUserOperation
+                .operationProcess(GetPurchaseForUserRequest.builder()
+                .page(page)
                 .userId(userId).build()));
 
     }

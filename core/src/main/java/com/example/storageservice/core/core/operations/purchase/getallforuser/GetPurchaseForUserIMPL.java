@@ -35,9 +35,7 @@ public class GetPurchaseForUserIMPL implements GetPurchaseForUserOperation {
                             .successful(purchase.getSuccessful())
                             .totalPrice(purchase.getTotalPrice())
                             .build());
-
                 });
-
 
         return GetPurchaseForUserResponse.builder()
 
@@ -45,6 +43,7 @@ public class GetPurchaseForUserIMPL implements GetPurchaseForUserOperation {
 
                 .purchases(zooStoreRestClient.recommendedItems(GetRecommendeeItemsRequest.builder()
                         .purchaseList(responseList)
+                                .page(request.getPage())
                         .build()).getItems()).build();
     }
 }

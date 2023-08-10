@@ -12,4 +12,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class GetPurchaseForUserRequest implements OperationRequest {
     private UUID userId;
+    private int page;
 }
