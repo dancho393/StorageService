@@ -16,4 +16,5 @@ public class CreatePurchaseRequest implements OperationRequest {
     private Float totalPrice;
     private UUID userId;
     private Float userBalance;
+    private int discountPoints;
 }

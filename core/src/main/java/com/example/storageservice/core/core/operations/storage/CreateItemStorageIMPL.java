@@ -16,14 +16,16 @@ import org.springframework.stereotype.Service;
 public class CreateItemStorageIMPL implements CreateItemStorageOperation {
     private final ItemStorageRepository itemStorageRepository;
     private final ZooStoreRestClient zooStoreRestClient;
+
     @Override
     public CreateItemStorageResponse operationProcess(CreateItemStorageRequest itemStorage) {
 
-    try{
-        zooStoreRestClient.getItemById(itemStorage.getItemId().toString());
-    }catch (Exception e) {
-        throw new ResourceNotFoundException("Item Not Found");
-    }
+        try {
+            zooStoreRestClient.getItemById(itemStorage.getItemId().toString());
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Item Not Found:"+e.getMessage());
+        }
+
 
         ItemStorage itemStorageEntity = ItemStorage.builder()
                 .itemId(itemStorage.getItemId())
@@ -40,3 +42,7 @@ public class CreateItemStorageIMPL implements CreateItemStorageOperation {
                 .build();
     }
 }
+
+
+
+

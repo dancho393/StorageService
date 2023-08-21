@@ -41,7 +41,7 @@ public class ItemStorageController {
     public ResponseEntity<ChangePriceItemStorageResponse> changePrice(@Valid @RequestBody ChangePriceItemStorageRequest newPrice){
         return ResponseEntity.ok(changePriceItemStorageOperation.operationProcess(newPrice));
     }
-    @PostMapping()
+    @PostMapping
     public ResponseEntity createItemStorage(@Valid @RequestBody CreateItemStorageRequest itemStorage){
 
         return ResponseEntity.ok(createItemStorageOperation.operationProcess(itemStorage));

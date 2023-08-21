@@ -23,9 +23,11 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
     private final ItemStorageRepository itemStorageRepository;
     @Override
     public CreatePurchaseResponse operationProcess(CreatePurchaseRequest request) {
+
+        Float discountedPrice=discount(request.getTotalPrice(), request.getDiscountPoints());
         List<ItemStorage> itemStorageList =itemStorageRepository.findAll();
         Boolean successful = checkItemsWithEnoughQuantity(request.getItems(),itemStorageList)
-                &&request.getUserBalance()>=request.getTotalPrice();
+                &&request.getUserBalance()>=discountedPrice;
         ArrayList<ItemStorage> list=new ArrayList<>();
 
         if(successful){
@@ -44,13 +46,14 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
                 .userId(request.getUserId())
                         .purchaseDate(new Timestamp(System.currentTimeMillis()))
 
-                .totalPrice(request.getTotalPrice())
+                .totalPrice(discountedPrice)
                 .items(request.getItems())
                 .successful(successful)
                 .build());
 
         return CreatePurchaseResponse
                 .builder()
+                .discountedPrice(discountedPrice)
                 .successful(successful)
                 .totalPrice(request.getTotalPrice())
                 .purchaseDate(new Timestamp(System.currentTimeMillis()))
@@ -60,6 +63,24 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
        return items.entrySet().stream()
                 .allMatch(entry -> itemStorageList.stream()
                         .anyMatch(item -> item.getItemId().equals(entry.getKey()) && item.getQuantity() >= entry.getValue()));
+    }
+    public Float discount(Float totalPrice,int discountPoints){
+        if(discountPoints==0)
+            return totalPrice;
+        if (discountPoints>0&&discountPoints<2000)
+            return (totalPrice/100)*95;//5% discount
+        if(discountPoints>=2000&&discountPoints<4000)
+            return (totalPrice/100)*90;//10% discount
+        if(discountPoints>=4000&&discountPoints<6000)
+            return (totalPrice/100)*85;//15% discount
+        if(discountPoints>=6000&&discountPoints<8000)
+            return (totalPrice/100)*80;//20% discount
+        if(discountPoints>=8000)
+            return (totalPrice/100)*75;//25% discount
+
+
+        return totalPrice;
+
     }
 
 }

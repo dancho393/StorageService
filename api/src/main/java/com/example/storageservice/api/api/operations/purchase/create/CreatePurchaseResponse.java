@@ -23,6 +23,7 @@ public class CreatePurchaseResponse implements OperationResponse {
     private Map<UUID,Integer> items;
 
     private Float totalPrice;
+    private Float discountedPrice;
 
     private UUID userId;
 }

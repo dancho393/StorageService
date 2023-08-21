@@ -1,5 +1,4 @@
 package com.example.storageservice.core.core.operations.purchase.getallforuser;
-
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserOperation;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserRequest;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserResponse;
@@ -7,6 +6,7 @@ import com.example.storageservice.api.api.operations.purchase.getforuser.GetUser
 import com.example.storageservice.persistence.persistence.entities.Purchase;
 import com.example.storageservice.persistence.persistence.repositories.PurchaseRepository;
 import com.example.zoostore.api.operations.item.getrecommendee.GetRecommendeeItemsRequest;
+import com.example.zoostore.api.operations.item.getrecommendee.GetRecommendeeUser;
 import com.example.zoostore.restexport.ZooStoreRestClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,11 @@ public class GetPurchaseForUserIMPL implements GetPurchaseForUserOperation {
     @Override
     public GetPurchaseForUserResponse operationProcess(GetPurchaseForUserRequest request) {
         List<Purchase> purchaseList= purchaseRepository.findAllByUserId(request.getUserId());
-        List<GetUserPurchase> responseList=new ArrayList<>();
+        List<GetRecommendeeUser> responseList=new ArrayList<>();
                 purchaseList.stream()
                         .filter(purchase -> purchase.getSuccessful())
                 .forEach(purchase -> {
-                    responseList.add( GetUserPurchase.builder()
+                    responseList.add( GetRecommendeeUser.builder()
                                     .id(purchase.getId())
                             .userId(purchase.getUserId())
                             .purchaseDate(purchase.getPurchaseDate())
@@ -37,9 +37,6 @@ public class GetPurchaseForUserIMPL implements GetPurchaseForUserOperation {
                 });
 
         return GetPurchaseForUserResponse.builder()
-
-
-
                 .purchases(zooStoreRestClient.recommendedItems(GetRecommendeeItemsRequest.builder()
                         .purchaseList(responseList)
                                 .page(request.getPage())

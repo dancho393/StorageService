@@ -1,14 +1,14 @@
 package com.example.storageservice.rest.controllers;
 
+import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseOperation;
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseRequest;
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseResponse;
+import com.example.storageservice.api.api.operations.purchase.getAll.GetAllOperation;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllRequest;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllResponse;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserOperation;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserRequest;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserResponse;
-import com.example.storageservice.core.core.operations.purchase.create.CreatePurchaseIMPL;
-import com.example.storageservice.core.core.operations.purchase.getAll.GetAllIMPL;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +19,8 @@ import java.util.UUID;
 @RequestMapping("/purchase")
 @AllArgsConstructor
 public class PurchaseController {
-    private final GetAllIMPL getAll;
-    private final CreatePurchaseIMPL createPurchase;
+    private final GetAllOperation getAll;
+    private final CreatePurchaseOperation createPurchase;
     private final GetPurchaseForUserOperation getPurchaseForUserOperation;
     @GetMapping("/all/{page}")
     public ResponseEntity<GetAllResponse> getAll(@PathVariable int page){

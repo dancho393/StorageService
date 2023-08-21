@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  storagedb:
+    container_name: storedb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: storage
+    networks:
+      springboot-mysql-net:
+
+  server:
+    container_name: storage
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      springboot-mysql-net:
+    restart: on-failure
+    depends_on:
+      - storagedb
+
+
+networks:
+  springboot-mysql-net:
