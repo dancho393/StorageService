@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,5 +30,8 @@ public class Purchase {
     private Float totalPrice;
 
     private UUID userId;
-    
+
+    @OneToMany(mappedBy = "purchase")
+    private List<Shipment> shipments = new ArrayList<>();
+
 }

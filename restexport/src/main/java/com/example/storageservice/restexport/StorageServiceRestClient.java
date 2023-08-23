@@ -6,6 +6,10 @@ import com.example.storageservice.api.api.operations.purchase.create.CreatePurch
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseResponse;
 import com.example.storageservice.api.api.operations.purchase.getAll.GetAllResponse;
 import com.example.storageservice.api.api.operations.purchase.getforuser.GetPurchaseForUserResponse;
+import com.example.storageservice.api.api.operations.shipment.arive.ShipmentArrivalResponse;
+import com.example.storageservice.api.api.operations.shipment.forpurchase.ShipmentForPurchaseRequest;
+import com.example.storageservice.api.api.operations.shipment.forpurchase.ShipmentForPurchaseResponse;
+import com.example.storageservice.api.api.operations.shipment.take.TakeShipmentResponse;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -33,6 +37,13 @@ public interface StorageServiceRestClient {
 
     GetPurchaseForUserResponse recommend(@Param String userId,@Param int page);
 
+    @RequestLine("POST /shipments/all")
+    ShipmentForPurchaseResponse shipmentForPurchase(@RequestBody ShipmentForPurchaseRequest request);
 
+    @RequestLine("POST /shipments/{shipmentId}")
+    ShipmentArrivalResponse shipmentArrival(@Param String shipmentId);
+
+    @RequestLine("POST shipments/{shipmentId}/{userId}")
+    TakeShipmentResponse takeShipment(@Param String shipmentId,@Param String userId);
 
 }

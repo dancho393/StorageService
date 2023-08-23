@@ -17,4 +17,7 @@ public class CreatePurchaseRequest implements OperationRequest {
     private UUID userId;
     private Float userBalance;
     private int discountPoints;
+    private String userCity;
+    private String userCountry;
+    private String userContinent;
 }

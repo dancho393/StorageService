@@ -11,6 +11,8 @@ import com.example.zoostore.restexport.ZooStoreRestClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CreateItemStorageIMPL implements CreateItemStorageOperation {
@@ -23,16 +25,26 @@ public class CreateItemStorageIMPL implements CreateItemStorageOperation {
         try {
             zooStoreRestClient.getItemById(itemStorage.getItemId().toString());
         } catch (Exception e) {
-            throw new ResourceNotFoundException("Item Not Found:"+e.getMessage());
+            throw new ResourceNotFoundException("Item Not Found:");
         }
 
-
-        ItemStorage itemStorageEntity = ItemStorage.builder()
+        Optional<ItemStorage> itemStorageEntity = itemStorageRepository
+                .findByItemId(itemStorage.getItemId());
+        if(!itemStorageEntity.isEmpty()){
+            itemStorageEntity.get().setQuantity(itemStorageEntity.get().getQuantity()+
+                    itemStorage.getQuantity());
+            return makeCreateItemStorageResponse(itemStorageEntity.get());
+        }
+        ItemStorage newItemStorage = ItemStorage.builder()
                 .itemId(itemStorage.getItemId())
                 .price(itemStorage.getPrice())
                 .quantity(itemStorage.getQuantity())
                 .build();
 
+        return makeCreateItemStorageResponse(newItemStorage);
+
+    }
+    public CreateItemStorageResponse makeCreateItemStorageResponse(ItemStorage itemStorageEntity){
         itemStorageRepository.save(itemStorageEntity);
         return CreateItemStorageResponse.builder()
                 .id(itemStorageEntity.getId())
@@ -40,6 +52,7 @@ public class CreateItemStorageIMPL implements CreateItemStorageOperation {
                 .price(itemStorageEntity.getPrice())
                 .quantity(itemStorageEntity.getQuantity())
                 .build();
+
     }
 }
 

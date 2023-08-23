@@ -5,12 +5,20 @@ import com.example.storageservice.api.api.operations.purchase.create.CreatePurch
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseResponse;
 import com.example.storageservice.persistence.persistence.entities.ItemStorage;
 import com.example.storageservice.persistence.persistence.entities.Purchase;
+import com.example.storageservice.persistence.persistence.entities.Shipment;
+import com.example.storageservice.persistence.persistence.enums.EstimatedTime;
+import com.example.storageservice.persistence.persistence.enums.ShipmentStatus;
 import com.example.storageservice.persistence.persistence.repositories.ItemStorageRepository;
 import com.example.storageservice.persistence.persistence.repositories.PurchaseRepository;
+import com.example.storageservice.persistence.persistence.repositories.ShipmentRepository;
+import com.example.zoostore.api.operations.item.get.GetItemResponse;
+import com.example.zoostore.restexport.ZooStoreRestClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +29,8 @@ import java.util.UUID;
 public class CreatePurchaseIMPL implements CreatePurchaseOperation {
     private final PurchaseRepository purchaseRepository;
     private final ItemStorageRepository itemStorageRepository;
+    private final ZooStoreRestClient zooStoreRestClient;
+    private ShipmentRepository shipmentRepository;
     @Override
     public CreatePurchaseResponse operationProcess(CreatePurchaseRequest request) {
 
@@ -29,27 +39,44 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
         Boolean successful = checkItemsWithEnoughQuantity(request.getItems(),itemStorageList)
                 &&request.getUserBalance()>=discountedPrice;
         ArrayList<ItemStorage> list=new ArrayList<>();
+        List<Shipment> shipments=new ArrayList<>();
 
         if(successful){
-           request.getItems().entrySet().stream()
-                   .forEach(entry->{
-                    ItemStorage itemStorage=itemStorageList.stream()
-                            .filter(item ->item.getItemId().equals(entry.getKey()))
-                            .findFirst()
-                            .orElseThrow(()->new RuntimeException("Not Found Storage"));
-                    itemStorage.setQuantity(itemStorage.getQuantity()-entry.getValue());
-                    list.add(itemStorage);
+           request.getItems().forEach((key, value) -> {
+               ItemStorage itemStorage = itemStorageList.stream()
+                       .filter(item -> item.getItemId().equals(key))
+                       .findFirst()
+                       .orElseThrow(() -> new RuntimeException("Not Found Storage"));
+               itemStorage.setQuantity(itemStorage.getQuantity() - value);
+               list.add(itemStorage);
+               GetItemResponse response = zooStoreRestClient.getItemById(itemStorage.getItemId().toString());
+                shipments.add(makeShipment(response.getVendorCountry(),
+                        response.getVendorCity(),
+                        request.getUserContinent(),
+                        request.getUserCountry(),
+                        request.getUserCity(),
+                        request.getUserContinent(),
+                        key,
+                        value
+                        ));
+
            });
            itemStorageRepository.saveAll(list);
         }
-        purchaseRepository.save(Purchase.builder()
-                .userId(request.getUserId())
-                        .purchaseDate(new Timestamp(System.currentTimeMillis()))
 
+
+        Purchase purchase= Purchase.builder()
+                .userId(request.getUserId())
+                .purchaseDate(new Timestamp(System.currentTimeMillis()))
+                .shipments(shipments)
                 .totalPrice(discountedPrice)
                 .items(request.getItems())
                 .successful(successful)
-                .build());
+                .build();
+
+        purchaseRepository.save(purchase);
+        shipments.forEach(shipment -> shipment.setPurchase(purchase));
+        shipmentRepository.saveAll(shipments);
 
         return CreatePurchaseResponse
                 .builder()
@@ -83,4 +110,58 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
 
     }
 
+    private Shipment makeShipment(String fromCountry,
+                                 String fromCity,
+                                 String fromContinent,
+                                 String toCountry,
+                                 String toCity,
+                                 String toContinent,
+                                 UUID itemId,
+                                 int itemQuantity){
+        EstimatedTime estimatedTime= calculateEstimatedTime(fromCity,
+                fromCountry,
+                fromContinent,
+                toCity,
+                toCountry,
+                toContinent);
+
+        return Shipment.builder()
+                .fromCity(fromCity)
+                .fromCountry(fromCountry)
+                .fromContinent(fromContinent)
+                .toCity(toCity)
+                .toCountry(toCountry)
+                .toContinent(toContinent)
+                .shipmentStatus(ShipmentStatus.WAITING)
+                .itemId(itemId)
+                .itemQuantity(itemQuantity)
+                .estimatedTime(estimatedTime.toString())
+                .estimatedArrival(calculateArrivalTime(estimatedTime))
+                .build();
+    }
+    private EstimatedTime calculateEstimatedTime(String vendorCity,
+                                                String vendorCountry,
+                                                String vendorContinent,
+                                                String userCity,
+                                                String userCountry,
+                                                String userContinent){
+        if(vendorCity.equals(userCity))
+            return EstimatedTime.TWODAYS;
+        if(vendorCountry.equals(userCountry))
+            return EstimatedTime.FOURDAYS;
+        if(userContinent.equals(vendorContinent))
+            return EstimatedTime.SEVENDAYS;
+        return EstimatedTime.TENDAYS;
+    }
+    private String calculateArrivalTime(EstimatedTime estimatedTime){
+        int days=0;
+        switch (estimatedTime){
+            case TWODAYS -> days=2;
+            case FOURDAYS -> days=4;
+            case SEVENDAYS -> days=7;
+            case TENDAYS -> days=10;
+        }
+        return LocalDate.now().plusDays(days).toString();
+    }
 }
+
