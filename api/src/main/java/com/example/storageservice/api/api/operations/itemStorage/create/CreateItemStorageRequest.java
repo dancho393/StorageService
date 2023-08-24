@@ -18,7 +18,7 @@ public class CreateItemStorageRequest implements OperationRequest {
     @NotBlank
     private UUID itemId;
     @Min(value = 0,message = "Quantity must be greater or equal to zero")
-    private int quantity;
+    private Integer quantity;
     @Min(value = 0,message = "Price must be greater or equal to zero")
     private Float price;
 }
