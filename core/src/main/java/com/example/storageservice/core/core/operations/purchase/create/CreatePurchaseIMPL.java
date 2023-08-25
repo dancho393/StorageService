@@ -3,6 +3,7 @@ package com.example.storageservice.core.core.operations.purchase.create;
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseOperation;
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseRequest;
 import com.example.storageservice.api.api.operations.purchase.create.CreatePurchaseResponse;
+import com.example.storageservice.core.core.exceptions.ResourceNotFoundException;
 import com.example.storageservice.persistence.persistence.entities.ItemStorage;
 import com.example.storageservice.persistence.persistence.entities.Purchase;
 import com.example.storageservice.persistence.persistence.entities.Shipment;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,23 +34,26 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
     @Override
     public CreatePurchaseResponse operationProcess(CreatePurchaseRequest request) {
 
-        Float discountedPrice=discount(request.getTotalPrice(), request.getDiscountPoints());
-        List<ItemStorage> itemStorageList =itemStorageRepository.findAll();
-        Boolean successful = checkItemsWithEnoughQuantity(request.getItems(),itemStorageList)
-                &&request.getUserBalance()>=discountedPrice;
-        ArrayList<ItemStorage> list=new ArrayList<>();
-        List<Shipment> shipments=new ArrayList<>();
+        Float discountedPrice = discount(request.getTotalPrice(), request.getDiscountPoints());
+        List<ItemStorage> itemStorageList = itemStorageRepository.findAll();
+        Boolean successful = checkItemsWithEnoughQuantity(request.getItems(), itemStorageList)
+                && request.getUserBalance() >= discountedPrice;
+        ArrayList<ItemStorage> updatedItemStorageList = new ArrayList<>();
+        List<Shipment> shipments = new ArrayList<>();
 
-        if(successful){
-           request.getItems().forEach((key, value) -> {
-               ItemStorage itemStorage = itemStorageList.stream()
-                       .filter(item -> item.getItemId().equals(key))
-                       .findFirst()
-                       .orElseThrow(() -> new RuntimeException("Not Found Storage"));
-               itemStorage.setQuantity(itemStorage.getQuantity() - value);
-               list.add(itemStorage);
-               GetItemResponse response = zooStoreRestClient.getItemById(itemStorage.getItemId().toString());
-                shipments.add(makeShipment(response.getVendorCountry(),
+        if (successful) {
+            request.getItems().forEach((key, value) -> {
+                ItemStorage itemStorage = itemStorageList.stream()
+                        .filter(item -> item.getItemId().equals(key))
+                        .findFirst()
+                        .orElseThrow(() -> new ResourceNotFoundException("Not Found Storage"));
+
+                itemStorage.setQuantity(itemStorage.getQuantity() - value);
+                updatedItemStorageList.add(itemStorage);
+
+                GetItemResponse response = zooStoreRestClient.getItemById(itemStorage.getItemId().toString());
+                shipments.add(makeShipment(
+                        response.getVendorCountry(),
                         response.getVendorCity(),
                         request.getUserContinent(),
                         request.getUserCountry(),
@@ -58,16 +61,14 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
                         request.getUserContinent(),
                         key,
                         value
-                        ));
+                ));
+            });
 
-           });
-           itemStorageRepository.saveAll(list);
+            itemStorageRepository.saveAll(updatedItemStorageList);
         }
 
-
-        Purchase purchase= Purchase.builder()
+        Purchase purchase = Purchase.builder()
                 .userId(request.getUserId())
-                .purchaseDate(new Timestamp(System.currentTimeMillis()))
                 .shipments(shipments)
                 .totalPrice(discountedPrice)
                 .items(request.getItems())
@@ -78,13 +79,13 @@ public class CreatePurchaseIMPL implements CreatePurchaseOperation {
         shipments.forEach(shipment -> shipment.setPurchase(purchase));
         shipmentRepository.saveAll(shipments);
 
-        return CreatePurchaseResponse
-                .builder()
+        return CreatePurchaseResponse.builder()
                 .discountedPrice(discountedPrice)
                 .successful(successful)
                 .totalPrice(request.getTotalPrice())
                 .purchaseDate(new Timestamp(System.currentTimeMillis()))
                 .build();
+
     }
     public  boolean checkItemsWithEnoughQuantity(Map<UUID, Integer> items,List<ItemStorage> itemStorageList) {
        return items.entrySet().stream()

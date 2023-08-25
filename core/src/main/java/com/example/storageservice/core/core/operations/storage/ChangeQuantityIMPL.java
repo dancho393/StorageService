@@ -15,14 +15,17 @@ public class ChangeQuantityIMPL implements ChangeQuantityOperation {
     private final ItemStorageRepository itemStorageRepository;
     @Override
     public ChangeQuantityResponse operationProcess(ChangeQuantityRequest itemStorage) {
-       ItemStorage itemStorageEntity = itemStorageRepository.findById(itemStorage.getId())
-                .orElseThrow(()-> new ResourceNotFoundException("ItemStorage Not Found"));
-       itemStorageEntity.setQuantity(itemStorageEntity.getQuantity()+itemStorage.getQuantity());
-       itemStorageRepository.save(itemStorageEntity);
+        ItemStorage itemStorageEntity = itemStorageRepository.findById(itemStorage.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("ItemStorage Not Found"));
+
+        itemStorageEntity.setQuantity(itemStorageEntity.getQuantity() + itemStorage.getQuantity());
+        itemStorageRepository.save(itemStorageEntity);
+
         return ChangeQuantityResponse.builder()
                 .id(itemStorageEntity.getId())
                 .quantity(itemStorageEntity.getQuantity())
                 .price(itemStorageEntity.getPrice())
                 .build();
+
     }
 }

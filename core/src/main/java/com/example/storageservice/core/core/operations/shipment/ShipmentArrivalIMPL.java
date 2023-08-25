@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @AllArgsConstructor
@@ -20,16 +19,19 @@ public class ShipmentArrivalIMPL implements ShipmentArrivalOperation {
     @Override
     public ShipmentArrivalResponse operationProcess(ShipmentArrivalRequest request) {
         Shipment shipment = shipmentRepository.findById(request.getShipmentId())
-                .orElseThrow(()->new ResourceNotFoundException("Shipment Not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Shipment Not found"));
         shipment.setArrival(LocalDate.now().toString());
         shipment.setShipmentStatus(ShipmentStatus.DONE);
-        if(LocalDate.now().isAfter(LocalDate.parse(shipment.getEstimatedArrival())))
-            shipment.setShipmentStatus(ShipmentStatus.DONELATE);
-        shipmentRepository.save(shipment);
 
+        if (LocalDate.now().isAfter(LocalDate.parse(shipment.getEstimatedArrival()))) {
+            shipment.setShipmentStatus(ShipmentStatus.DONELATE);
+        }
+
+        shipmentRepository.save(shipment);
 
         return ShipmentArrivalResponse.builder()
                 .status(shipment.getShipmentStatus().toString())
                 .build();
+
     }
 }

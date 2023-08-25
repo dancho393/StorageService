@@ -6,11 +6,14 @@ import com.example.storageservice.api.api.operations.itemStorage.changePrice.Cha
 import com.example.storageservice.api.api.operations.itemStorage.changePrice.ChangePriceItemStorageResponse;
 import com.example.storageservice.api.api.operations.itemStorage.changeQuantity.ChangeQuantityOperation;
 import com.example.storageservice.api.api.operations.itemStorage.changeQuantity.ChangeQuantityRequest;
+import com.example.storageservice.api.api.operations.itemStorage.changeQuantity.ChangeQuantityResponse;
 import com.example.storageservice.api.api.operations.itemStorage.create.CreateItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.create.CreateItemStorageRequest;
+import com.example.storageservice.api.api.operations.itemStorage.create.CreateItemStorageResponse;
 import com.example.storageservice.api.api.operations.itemStorage.edit.EditItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageOperation;
 import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageRequest;
+import com.example.storageservice.api.api.operations.itemStorage.get.GetItemStorageResponse;
 import com.example.storageservice.api.api.operations.itemStorage.getByItemId.GetByItemIdOperation;
 import com.example.storageservice.api.api.operations.itemStorage.getByItemId.GetByItemIdRequest;
 import jakarta.validation.Valid;
@@ -33,7 +36,7 @@ public class ItemStorageController {
     private final EditItemStorageOperation editItemStorageOperation;//NotUsedYet
     private final GetByItemIdOperation getByItemIdOperation;
     @PutMapping("/quantity")
-    public ResponseEntity changeQuantity(@RequestBody ChangeQuantityRequest itemStorage){
+    public ResponseEntity<ChangeQuantityResponse> changeQuantity(@RequestBody ChangeQuantityRequest itemStorage){
         return ResponseEntity.ok(changeQuantityOperation.operationProcess(itemStorage));
     }
 
@@ -42,12 +45,12 @@ public class ItemStorageController {
         return ResponseEntity.ok(changePriceItemStorageOperation.operationProcess(newPrice));
     }
     @PostMapping
-    public ResponseEntity createItemStorage(@Valid @RequestBody CreateItemStorageRequest itemStorage){
+    public ResponseEntity<CreateItemStorageResponse> createItemStorage(@Valid @RequestBody CreateItemStorageRequest itemStorage){
 
         return ResponseEntity.ok(createItemStorageOperation.operationProcess(itemStorage));
     }
     @GetMapping("/{id}")
-    public ResponseEntity getItemStorage(@Valid @PathVariable UUID id){
+    public ResponseEntity<GetItemStorageResponse> getItemStorage(@Valid @PathVariable UUID id){
         GetItemStorageRequest itemStorage = GetItemStorageRequest.builder()
                 .id(id)
                 .build();

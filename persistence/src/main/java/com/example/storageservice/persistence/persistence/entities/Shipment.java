@@ -1,12 +1,9 @@
 package com.example.storageservice.persistence.persistence.entities;
 
-import com.example.storageservice.persistence.persistence.enums.EstimatedTime;
 import com.example.storageservice.persistence.persistence.enums.ShipmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.security.Timestamp;
-import java.util.Map;
 import java.util.UUID;
 
 @Table(name = "shipments")

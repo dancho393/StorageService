@@ -9,9 +9,9 @@ import com.example.storageservice.persistence.persistence.enums.ShipmentStatus;
 import com.example.storageservice.persistence.persistence.repositories.ShipmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 
 @Service
@@ -22,17 +22,19 @@ public class TakeShipmentIMPL implements TakeShipmentOperation {
     @Override
     public TakeShipmentResponse operationProcess(TakeShipmentRequest request) {
         Shipment shipment = shipmentRepository.findById(request.getShipmentId())
-                .orElseThrow(()->new ResourceNotFoundException("Shipment Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Shipment Not Found"));
         shipment.setTakerUserId(request.getUserId());
         shipment.setShipmentStatus(ShipmentStatus.TAKEN);
         shipment.setTakenTime(LocalDateTime.now().toString());
         shipmentRepository.save(shipment);
+
         return TakeShipmentResponse.builder()
                 .shipmentStatus(shipment.getShipmentStatus().toString())
                 .takenTime(shipment.getTakenTime())
                 .refundedMoney(calculateRefundMoney(shipment))
                 .userId(shipment.getPurchase().getUserId())
                 .build();
+
     }
     private Float calculateRefundMoney(Shipment shipment){
         List<Shipment> shipmentList = shipmentRepository.findAllByPurchase_Id(shipment.getPurchase().getId());

@@ -18,7 +18,7 @@ public class ChangePriceItemStorageIMPL implements ChangePriceItemStorageOperati
     @Override
     public ChangePriceItemStorageResponse operationProcess(ChangePriceItemStorageRequest newPrice) {
         ItemStorage itemStorageEntity = itemStorageRepository.findById(newPrice.getId())
-                .orElseThrow(()->new ResourceNotFoundException("ItemStorage Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("ItemStorage Not Found"));
 
         itemStorageEntity.setPrice(newPrice.getNewPrice());
 
@@ -30,5 +30,6 @@ public class ChangePriceItemStorageIMPL implements ChangePriceItemStorageOperati
                 .price(itemStorageEntity.getPrice())
                 .quantity(itemStorageEntity.getQuantity())
                 .build();
+
     }
 }
